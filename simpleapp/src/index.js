@@ -1,35 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-
-//setInterval(tick, 1000);
-
-class Clock extends React.Component{
-	constructor(props){
-		super(props);
-		this.state = {date: new Date(), interval: props.interval};
+class Toggle extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {isToggleOn: true};   
+    //in <button onClick=this.handleClick>, "this" isn't binded by default. javascript doesn't know what "this" is
+    //so we have to manually declare what "this.handleClick" is
+    this.handleClick = this.handleClick.bind(this);
 	}
-	componentDidMount(){
-		this.timerID = setInterval(
-			()=>this.tick(),this.state.interval
-			);
-	}
-	componentWillUnmount(){
-		clearInterval(this.timerID);
-	}
-	tick(){
-		this.setState({
-			date:new Date()
-		});
-	}
-	render(){
-		return(
-			<div>
-      			<h1>Hello, world!</h1>
-      			<h2>It is {this.state.date.toLocaleTimeString()}.</h2>
-    		</div>
-    	)
-	}
+  handleClick() {    
+  	this.setState(
+  		{isToggleOn: !this.state.isToggleOn}
+  		);
+    }
+  render() {
+    return (
+      <button onClick={this.handleClick}>        
+      {this.state.isToggleOn ? 'ON' : 'OFF'}
+      </button>
+    );
+  }
 }
 
-ReactDOM.render( <Clock interval={2000} />, document.getElementById('root')  );
+ReactDOM.render(
+  <Toggle />,
+  document.getElementById('root')
+);
